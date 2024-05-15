@@ -14,6 +14,7 @@ services:
     volumes:
       - ./data/pg:/var/lib/postgresql/data
       - ./logs/pg:/var/log/postgresql
+      - ./share:/share
   nifi:
     container_name: ${PROJECT_NAME:-sigeca-central}-nifi
     image: apache/nifi:${NIFI_VERSION:-2.0.0-M2}
