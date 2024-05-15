@@ -40,4 +40,3 @@ services:
       - ./share:/share
     depends_on:
       - nifi
-    network_mode: "host"
