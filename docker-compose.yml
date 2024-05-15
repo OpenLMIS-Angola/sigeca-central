@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: ${PROJECT_NAME:-sigeca-central}-db
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+    restart: always
+    # ports:
+    #   - 5432:5432
+    volumes:
+      - ./data/pg:/var/lib/postgresql/data
+      - ./logs/pg:/var/log/postgresql
+  nifi:
+    container_name: ${PROJECT_NAME:-sigeca-central}-nifi
+    image: apache/nifi:${NIFI_VERSION:-2.0.0-M2}
+    environment:
+      - NIFI_WEB_HTTPS_PORT=${NIFI_WEB_HTTPS_PORT:-8443}
+    ports:
+      - ${NIFI_WEB_HTTPS_PORT:-8443}:${NIFI_WEB_HTTPS_PORT:-8443}
+    volumes:
+      # - ./logs/nifi:/opt/nifi-current/logs
+      # - ./config/nifi/nifi.properties:/opt/nifi-${NIFI_VERSION:-2.0.0-M2}/conf/nifi.properties
+      # - ./config/nifi:/opt/nifi-current/conf
+      # - ./data/nifi:/files
+      - ./share:/share
+  nginx:
+    container_name: ${PROJECT_NAME:-sigeca-central}-nginx
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      # - ./config/nginx:/etc/nginx/conf.d
+      - ./logs/nginx:/var/log/nginx
+      - ./share:/share
+    depends_on:
+      - nifi
+    network_mode: "host"
