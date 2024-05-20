@@ -1,7 +1,0 @@
-*
-
-# Keep gitignore
-!.gitignore
-
-# Keep nifi.properties
-!nifi.properties

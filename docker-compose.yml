@@ -1,41 +1,53 @@
 version: "3.9"
+name: ${PROJECT_NAME:-sigeca_central}
 
 services:
   db:
-    container_name: ${PROJECT_NAME:-sigeca-central}-db
+    container_name: ${PROJECT_NAME:-sigeca_central}_db
     image: postgres:latest
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
     restart: always
+    # For debugging only
     # ports:
     #   - 5432:5432
     volumes:
-      - ./data/pg:/var/lib/postgresql/data
-      - ./logs/pg:/var/log/postgresql
+      - db_data:/var/lib/postgresql/data
+      - db_logs:/var/log/postgresql
       - ./share:/share
   nifi:
-    container_name: ${PROJECT_NAME:-sigeca-central}-nifi
+    container_name: ${PROJECT_NAME:-sigeca_central}_nifi
     image: apache/nifi:${NIFI_VERSION:-2.0.0-M2}
     environment:
       - NIFI_WEB_HTTPS_PORT=${NIFI_WEB_HTTPS_PORT:-8443}
+      - SINGLE_USER_CREDENTIALS_USERNAME=${NIFI_USER}
+      - SINGLE_USER_CREDENTIALS_PASSWORD=${NIFI_PASSWORD}
+    # For debugging only
     ports:
       - ${NIFI_WEB_HTTPS_PORT:-8443}:${NIFI_WEB_HTTPS_PORT:-8443}
     volumes:
-      - ./logs/nifi:/opt/nifi/nifi-current/logs
-      - ./config/nifi/nifi.properties:/opt/nifi/nifi-current/conf/nifi.properties
-      - ./data/nifi:/files
+      - nifi_conf:/opt/nifi/nifi-current/conf
       - ./share:/share
   nginx:
-    container_name: ${PROJECT_NAME:-sigeca-central}-nginx
+    container_name: ${PROJECT_NAME:-sigeca_scentral}_nginx
     image: nginx:latest
     ports:
       - 80:80
       - 443:443
     volumes:
-      # - ./config/nginx:/etc/nginx/conf.d
-      - ./logs/nginx:/var/log/nginx
+      - ./config/nginx/sigeca.conf:/etc/nginx/conf.d/sigeca.conf
+      - ./config/nginx/ssl:/etc/nginx/ssl
       - ./share:/share
-    depends_on:
-      - nifi
+
+volumes:
+  db_data:
+    name: ${PROJECT_NAME:-sigeca_central}_db_data
+  db_logs:
+    name: ${PROJECT_NAME:-sigeca_central}_db_logs
+  nifi_conf:
+    name: ${PROJECT_NAME:-sigeca_central}_nifi_conf
+  
+networks:
+  default:
