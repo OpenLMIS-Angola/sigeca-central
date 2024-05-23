@@ -1,0 +1,6 @@
+# Ignore everything
+*
+
+# Keep gitignore
+!.gitignore
+!ssl-params.conf
