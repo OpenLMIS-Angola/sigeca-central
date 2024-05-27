@@ -1,4 +1,3 @@
-version: "3.9"
 name: ${PROJECT_NAME:-sigeca_central}
 
 services:
@@ -10,9 +9,8 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
     restart: always
-    # For debugging only
-    # ports:
-    #   - 5432:5432
+    ports:
+       - ${DB_PORT:-5432}:5432
     volumes:
       - db_data:/var/lib/postgresql/data
       - db_logs:/var/log/postgresql
@@ -21,12 +19,14 @@ services:
     container_name: ${PROJECT_NAME:-sigeca_central}_nifi
     image: apache/nifi:${NIFI_VERSION:-2.0.0-M2}
     environment:
+      - NIFI_WEB_HTTPS_HOST=0.0.0.0
       - NIFI_WEB_HTTPS_PORT=${NIFI_WEB_HTTPS_PORT:-8443}
+      - NIFI_WEB_PROXY_HOST=${DOMAIN_NAME}
       - SINGLE_USER_CREDENTIALS_USERNAME=${NIFI_USER}
       - SINGLE_USER_CREDENTIALS_PASSWORD=${NIFI_PASSWORD}
     # For debugging only
-    ports:
-      - ${NIFI_WEB_HTTPS_PORT:-8443}:${NIFI_WEB_HTTPS_PORT:-8443}
+    #ports:
+    #  - ${NIFI_WEB_HTTPS_PORT:-8443}:${NIFI_WEB_HTTPS_PORT:-8443}
     volumes:
       - nifi_conf:/opt/nifi/nifi-current/conf
       - ./share:/share
