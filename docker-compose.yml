@@ -9,8 +9,6 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
     restart: always
-    ports:
-       - ${DB_PORT:-5432}:5432
     volumes:
       - db_data:/var/lib/postgresql/data
       - db_logs:/var/log/postgresql
@@ -36,8 +34,11 @@ services:
     ports:
       - 80:80
       - 443:443
+      - ${DB_PORT:-5432}:5432
     volumes:
-      - ./config/nginx/sigeca.conf:/etc/nginx/conf.d/sigeca.conf
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/nginx/nifi.conf:/etc/nginx/conf.d/nifi.conf
+      - ./config/nginx/postgres.conf:/etc/nginx/postgres.conf
       - ./config/nginx/ssl:/etc/nginx/ssl
       - ./share:/share
 
@@ -51,3 +52,4 @@ volumes:
   
 networks:
   default:
+    name: ${PROJECT_NAME:-sigeca_central}_network
