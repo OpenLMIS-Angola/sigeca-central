@@ -12,6 +12,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
       - db_logs:/var/log/postgresql
+      - ./sql/init:/docker-entrypoint-initdb.d
       - ./share:/share
   nifi:
     container_name: ${PROJECT_NAME:-sigeca_central}_nifi
