@@ -62,6 +62,6 @@ ADD CONSTRAINT stock_event_line_stock_event_id_fkey FOREIGN KEY (stock_event_id)
 
 -- Stock On Hand constraints
 ALTER TABLE stock_on_hand
-ADD CONSTRAINT stock_on_hand_stock_card_id_fkey FOREIGN KEY (stock_card_id) REFERENCES stock_card_line(id);
+ADD CONSTRAINT stock_on_hand_stock_card_id_fkey FOREIGN KEY (stock_card_id) REFERENCES stock_card(id);
 
 -- User constraints
