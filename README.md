@@ -49,3 +49,14 @@ Additionally the ``ssl-params.conf`` file contains SSL parameters for nginx serv
 - Open shell in container ```docker compose exec nifi /bin/bash```
 - Set username and password ```/opt/nifi/nifi-current/bin/nifi.sh set-single-user-credentials <username> <password>```
 - Restart the container ```docker compose restart nifi```
+
+#### Create Test Dataset 
+Prerequisites: 
+- Python3 and venv installed. 
+- .env file created configured.
+- Database is running
+
+Steps:
+- Go to utils directory ```cd utils```
+- Create new venv ```python3 -m venv venv```
+- Execute script creating demo data ```python add_demo_data.py```
