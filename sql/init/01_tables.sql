@@ -7,6 +7,7 @@ CREATE TABLE facility (
     active BOOLEAN,
     code TEXT,
     comment TEXT,
+    geographic_zone_id UUID, 
     description TEXT,
     enabled BOOLEAN,
     name TEXT
@@ -293,6 +294,13 @@ CREATE TABLE stock_on_hand (
     occured_date DATE,
     stock_card_id UUID,
     processed_date DATE
+);
+
+-- Supported programs
+CREATE TABLE supported_program (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    facility_id UUID,
+    program_id UUID
 );
 
 -- User table
