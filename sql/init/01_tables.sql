@@ -1,17 +1,3 @@
--- Facility table
-CREATE TABLE facility (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated DATE,
-    active BOOLEAN,
-    code TEXT,
-    comment TEXT,
-    description TEXT,
-    enabled BOOLEAN,
-    name TEXT
-);
-
 -- Geographic Level table
 CREATE TABLE geographic_level (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -35,6 +21,28 @@ CREATE TABLE geographic_zone (
     name TEXT,
     level_id UUID,
     parent_id UUID
+);
+
+-- Facility table
+CREATE TABLE facility (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    reference_id UUID,
+    is_deleted BOOLEAN,
+    last_updated DATE,
+    active BOOLEAN,
+    code TEXT,
+    comment TEXT,
+    geographic_zone_id UUID, 
+    description TEXT,
+    enabled BOOLEAN,
+    name TEXT
+);
+
+-- Facility supported programs
+CREATE TABLE supported_program (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    facility_id UUID,
+    program_id UUID
 );
 
 -- Lot table

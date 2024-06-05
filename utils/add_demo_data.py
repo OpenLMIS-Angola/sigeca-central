@@ -49,7 +49,7 @@ def base_properties():
     )
 
 # Insert data into facility table
-def populate_facility(n):
+def populate_facility(n, geographic_zones):
     data = []
     for _ in range(n):
         data.append((
@@ -57,12 +57,13 @@ def populate_facility(n):
             True,  # active
             fake.unique.ean(length=8),  # code
             fake.sentence(),  # comment
+            geographic_zones[randint(0, len(geographic_zones)-1)], # geographic_zone_id
             fake.text(),  # description
             True,  # enabled
             fake.company()  # name
         ))
     execute_values(cur, """
-    INSERT INTO facility (id, reference_id, is_deleted, last_updated, active, code, comment, description, enabled, name)
+    INSERT INTO facility (id, reference_id, is_deleted, last_updated, active, code, comment, geographic_zone_id, description, enabled, name)
     VALUES %s
     """, data)
     return [x[0] for x in data]
@@ -273,6 +274,25 @@ def populate_program_product(n, programs, products):
             ))
     execute_values(cur, """
     INSERT INTO program_product (id, reference_id, is_deleted, last_updated, active, doses_per_patient, program_id, product_id, price_per_pack)
+    VALUES %s
+    """, data)
+    return [x[0] for x in data]
+
+# Insert data into program_product table
+def pupulate_facility_programs(max_per_facility, facilities, programs):
+    data = []
+    for facility in facilities:
+        # Ensure no product duplicates
+        programs_facility = programs.copy()
+        shuffle(programs_facility)
+        for _ in range(randint(1, max_per_facility)):
+            data.append((
+                random_uuid(),
+                facility, 
+                programs_facility.pop()
+            ))
+    execute_values(cur, """
+    INSERT INTO supported_program (id, facility_id, program_id)
     VALUES %s
     """, data)
     return [x[0] for x in data]
@@ -502,52 +522,56 @@ def populate_stock_on_hand(n, stock_cards):
 # Populate the tables with data
 print("Populating database...")
 
-facilities = populate_facility(2000)  # Populate with 100 rows
-print("Facilities added.")
-
-georgapinc_levels = populate_geographic_level(100)  # Populate with 10 rows
-geographic_zones = populate_geographic_zone(500, georgapinc_levels)  # Populate with 50 rows
+georgapinc_levels = populate_geographic_level(100)  
+geographic_zones = populate_geographic_zone(500, georgapinc_levels)  
 print("Geo zones and levels added.")
 
-lots=populate_lot(1000)  # Populate with 100 rows
-print("LOTs added.")
-
-users=populate_user(100, facilities)  # Populate with 50 rows
-print("Users added.")
-
-programs=populate_program(100)  # Populate with 10 rows
-print("Programs added.")
-
-orders=populate_order(2500, facilities, users, programs)  # Populate with 100 rows
-print("Oders added.")
-
-products=populate_product(500)  # Populate with 100 rows
+facilities = populate_facility(2000, geographic_zones)  
 print("Facilities added.")
 
-order_lines=populate_order_line(5000, orders, products)  # Populate with 200 rows
+lots=populate_lot(1000)  
+print("LOTs added.")
+
+users=populate_user(100, facilities)  
+print("Users added.")
+
+programs=populate_program(100)  
+print("Programs added.")
+
+orders=populate_order(2500, facilities, users, programs)  
+print("Oders added.")
+
+products=populate_product(500)  
+print("Facilities added.")
+
+order_lines=populate_order_line(5000, orders, products)  
 print("Order Lines added.")
 
-program_products=populate_program_product(1000, programs, products)  # Populate with 50 rows
+program_products=populate_program_product(1000, programs, products)  
 print("Program products added.")
 
-pods = populate_proof_of_delivery(500)  # Populate with 50 rows
-pods_lines = populate_proof_of_delivery_line(800, pods, products, lots)  # Populate with 200 rows
+supported_programs = pupulate_facility_programs(20, facilities, programs)
+print("Facilities programs added")
+
+pods = populate_proof_of_delivery(500)  
+pods_lines = populate_proof_of_delivery_line(800, pods, products, lots)  
 print("Proof of Delivery added.")
 
-requisitions = populate_requisition(1000, facilities, programs)  # Populate with 100 rows
-requisitions_lines = populate_requisition_line(2000, products, requisitions)  # Populate with 200 rows
+requisitions = populate_requisition(1000, facilities, programs)  
+requisitions_lines = populate_requisition_line(2000, products, requisitions)  
 print("Requisitions added.")
 
-stock_events = populate_stock_event(500, facilities, programs, users)  # Populate with 50 rows
-stock_events_lines = populate_stock_event_line(2000, facilities, lots, products, stock_events)  # Populate with 200 rows
+stock_events = populate_stock_event(500, facilities, programs, users)  
+stock_events_lines = populate_stock_event_line(2000, facilities, lots, products, stock_events)  
 print("Stock Events added.")
 
-stock_cards = populate_stock_card(1000, facilities, lots, products, programs, stock_events)  # Populate with 100 rows
-stock_cards_lines = populate_stock_card_line(2000, users, stock_events, stock_cards)  # Populate with 200 rows
+stock_cards = populate_stock_card(1000, facilities, lots, products, programs, stock_events)  
+stock_cards_lines = populate_stock_card_line(2000, users, stock_events, stock_cards)  
 print('Stock Cards Added')
 
-populate_stock_on_hand(200, stock_cards)  # Populate with 100 rows
+populate_stock_on_hand(200, stock_cards)  
 print("Stock on hand added.")
+
 
 # Commit the transaction
 conn.commit()
