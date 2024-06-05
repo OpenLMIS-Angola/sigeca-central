@@ -1,3 +1,8 @@
+
+-- Facility constraints
+ALTER TABLE facility
+ADD CONSTRAINT facility_geographic_zone_id_fkey FOREIGN KEY (geographic_zone_id) REFERENCES geographic_zone(id);
+
 -- Geographic Level constraints
 
 -- Geographic Zone constraints
@@ -6,17 +11,6 @@ ADD CONSTRAINT geographic_zone_level_id_fkey FOREIGN KEY (level_id) REFERENCES g
 
 ALTER TABLE geographic_zone
 ADD CONSTRAINT geographic_zone_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES geographic_zone(id);
-
--- Facility constraints
-ALTER TABLE facility
-ADD CONSTRAINT facility_geographic_zone_id_fkey FOREIGN KEY (geographic_zone_id) REFERENCES geographic_zone(id);
-
--- Supported Program constraints 
-ALTER TABLE supported_program
-ADD CONSTRAINT supported_program_facility_id_fkey FOREIGN KEY (facility_id) REFERENCES facility(id);
-
-ALTER TABLE supported_program
-ADD CONSTRAINT supported_program_program_id_fkey FOREIGN KEY (program_id) REFERENCES program(id);
 
 -- Lot constraints
 
@@ -72,5 +66,12 @@ ADD CONSTRAINT stock_event_line_stock_event_id_fkey FOREIGN KEY (stock_event_id)
 -- Stock On Hand constraints
 ALTER TABLE stock_on_hand
 ADD CONSTRAINT stock_on_hand_stock_card_id_fkey FOREIGN KEY (stock_card_id) REFERENCES stock_card(id);
+
+-- Supported Program constraints 
+ALTER TABLE supported_program
+ADD CONSTRAINT supported_program_facility_id_fkey FOREIGN KEY (facility_id) REFERENCES facility(id);
+
+ALTER TABLE supported_program
+ADD CONSTRAINT supported_program_program_id_fkey FOREIGN KEY (program_id) REFERENCES program(id);
 
 -- User constraints
