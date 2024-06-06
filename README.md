@@ -50,8 +50,7 @@ Additionally the ``ssl-params.conf`` file contains SSL parameters for nginx serv
 - Set username and password ```/opt/nifi/nifi-current/bin/nifi.sh set-single-user-credentials <username> <password>```
 - Restart the container ```docker compose restart nifi```
 
-<<<<<<< Updated upstream
-#### Create Test Dataset 
+### Create Test Dataset 
 Prerequisites: 
 - Python3 and venv installed. 
 - .env file created configured.
@@ -61,7 +60,7 @@ Steps:
 - Go to utils directory ```cd utils```
 - Create new venv ```python3 -m venv venv```
 - Execute script creating demo data ```python add_demo_data.py```
-=======
+
 ### Mapa Sanitario Configuration
 Mapa Sanitario is accessed through REST API and uses 3 actions to retrieve data
 - ``POST /api/login_check`` - Login request responding with JWT
@@ -73,4 +72,4 @@ For a proper connection, the following fields are required to be filled in ``.en
 - ``MAPA_SANITARIO_URL`` - FQDN of the Mapa Sanitario API
 - ``MAPA_SANITARIO_USERNAME`` - Username for the Mapa Sanitario API
 - ``MAPA_SANITARIO_PASSWORD`` - Password for the Mapa Sanitario API
->>>>>>> Stashed changes
+
