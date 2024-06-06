@@ -328,25 +328,25 @@ CREATE TABLE ms.facility (
     reference_id UUID,
     is_deleted BOOLEAN,
     last_updated DATE,
-    name VARCHAR(255) COMMENT 'nome',
-    code VARCHAR(50) COMMENT 'codigo',
-    acronym VARCHAR(10) COMMENT 'sigla',
-    category VARCHAR(50) COMMENT 'categoria',
-    ownership VARCHAR(100) COMMENT 'propriedade',
-    management VARCHAR(50) COMMENT 'gestao',
-    municipality VARCHAR(50) COMMENT 'municipio',
-    province VARCHAR(50) COMMENT 'provincia',
-    is_operational BOOLEAN COMMENT 'funcionamento',
+    name VARCHAR(255),
+    code VARCHAR(50),
+    acronym VARCHAR(10),
+    category VARCHAR(50),
+    ownership VARCHAR(100),
+    management VARCHAR(50),
+    municipality VARCHAR(50),
+    province VARCHAR(50),
+    is_operational BOOLEAN,
     latitude NUMERIC(8, 5),
     longitude NUMERIC(8, 5)
 );
 
 CREATE TABLE ms.service (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    reference_id UUID COMMENT 'servico_oferecido_id',
+    reference_id UUID,
     is_deleted BOOLEAN,
     last_updated DATE,
-    name TEXT COMMENT 'nome'
+    name TEXT
 )
 
 CREATE TABLE ms.facility_service (
