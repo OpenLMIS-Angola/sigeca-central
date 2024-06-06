@@ -6,7 +6,7 @@ Before first starting the server make sure to apply all configurations in this s
 
 #### Domain name
 The domain name should be updated in 2 palces
-- ``config/nginx/sigeca.conf``, ``server_name`` parameter
+- ``config/nginx/nifi.conf``, ``server_name`` parameter
 - ``.env`` file
 
 #### Database Configuration
@@ -50,6 +50,7 @@ Additionally the ``ssl-params.conf`` file contains SSL parameters for nginx serv
 - Set username and password ```/opt/nifi/nifi-current/bin/nifi.sh set-single-user-credentials <username> <password>```
 - Restart the container ```docker compose restart nifi```
 
+<<<<<<< Updated upstream
 #### Create Test Dataset 
 Prerequisites: 
 - Python3 and venv installed. 
@@ -60,3 +61,16 @@ Steps:
 - Go to utils directory ```cd utils```
 - Create new venv ```python3 -m venv venv```
 - Execute script creating demo data ```python add_demo_data.py```
+=======
+### Mapa Sanitario Configuration
+Mapa Sanitario is accessed through REST API and uses 3 actions to retrieve data
+- ``POST /api/login_check`` - Login request responding with JWT
+- ``GET /api/unidade`` - Retrieve full list of facilities (requires Bearer token)
+- ``GET /api/unidade?codigo=<code>`` - Retrieve a facility with specified code (requires Bearer token)
+
+#### Environment
+For a proper connection, the following fields are required to be filled in ``.env``:
+- ``MAPA_SANITARIO_URL`` - FQDN of the Mapa Sanitario API
+- ``MAPA_SANITARIO_USERNAME`` - Username for the Mapa Sanitario API
+- ``MAPA_SANITARIO_PASSWORD`` - Password for the Mapa Sanitario API
+>>>>>>> Stashed changes

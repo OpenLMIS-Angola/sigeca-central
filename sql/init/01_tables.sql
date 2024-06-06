@@ -319,3 +319,41 @@ CREATE TABLE "user" (
     job_title TEXT,
     phone_number TEXT
 );
+
+-- Mapa Sanitario
+
+-- Facility Table
+CREATE TABLE ms.facility (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    reference_id UUID,
+    is_deleted BOOLEAN,
+    last_updated DATE,
+    name VARCHAR(255) COMMENT 'nome',
+    code VARCHAR(50) COMMENT 'codigo',
+    acronym VARCHAR(10) COMMENT 'sigla',
+    category VARCHAR(50) COMMENT 'categoria',
+    ownership VARCHAR(100) COMMENT 'propriedade',
+    management VARCHAR(50) COMMENT 'gestao',
+    municipality VARCHAR(50) COMMENT 'municipio',
+    province VARCHAR(50) COMMENT 'provincia',
+    is_operational BOOLEAN COMMENT 'funcionamento',
+    latitude NUMERIC(8, 5),
+    longitude NUMERIC(8, 5)
+);
+
+CREATE TABLE ms.service (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    reference_id UUID COMMENT 'servico_oferecido_id',
+    is_deleted BOOLEAN,
+    last_updated DATE,
+    name TEXT COMMENT 'nome'
+)
+
+CREATE TABLE ms.facility_service (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    reference_id UUID,
+    is_deleted BOOLEAN,
+    last_updated DATE,
+    facility_id UUID,
+    service_id UUID
+)
