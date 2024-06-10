@@ -50,6 +50,20 @@ Additionally the ``ssl-params.conf`` file contains SSL parameters for nginx serv
 - Set username and password ```/opt/nifi/nifi-current/bin/nifi.sh set-single-user-credentials <username> <password>```
 - Restart the container ```docker compose restart nifi```
 
+#### Deploying Postgres driver
+To access the database Apache NiFi requires the JDBC PostgreSQL driver. Copy the driver with:
+- ```docker compose cp lib/postgresql-*.jar nifi:/opt/nifi/nifi-current/lib/```
+
+#### Deploy NiFi Workflow
+To upload current version of SIGECA Central Nifi flow:
+- Access the NiFi UI
+- Insert new ```Process Group```
+- Click ```Upload``` button (right to ```Process Group Name```)
+- Select the workflow file (```./config/nifi/SIGECA_Central.json```)
+- Click ```Add```
+
+The ```SIGECA_Central``` process group should appear in the workspace
+
 ### Create Test Dataset 
 Prerequisites: 
 - Python3 and venv installed. 
