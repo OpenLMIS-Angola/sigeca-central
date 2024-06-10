@@ -75,3 +75,16 @@ ALTER TABLE supported_program
 ADD CONSTRAINT supported_program_program_id_fkey FOREIGN KEY (program_id) REFERENCES program(id);
 
 -- User constraints
+
+-- Mapa Sanitario
+
+-- Facility constraints
+
+-- Service constraints
+
+-- Facility Service constraints
+ALTER TABLE ms.facility_service
+ADD CONSTRAINT facility_service_facility_id_fkey FOREIGN KEY (facility_id) REFERENCES ms.facility(id);
+
+ALTER TABLE ms.facility_service
+ADD CONSTRAINT facility_service_service_id_fkey FOREIGN KEY (service_id) REFERENCES ms.service(id);
