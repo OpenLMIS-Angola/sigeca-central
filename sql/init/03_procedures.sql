@@ -7,6 +7,7 @@ DECLARE
     current_facility_id UUID;
     current_service_id UUID;
 BEGIN
+    -- Procedure to process Mapa Sanitario payload and save facilities, services and links between them in the ms schema tables
     SELECT NOW() INTO update_time;
 
     FOR fac IN SELECT * FROM json_array_elements(payload->'unidades')
