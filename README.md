@@ -1,12 +1,14 @@
 # sigeca-central
 
-### Initial configuration
+This repository hosts dockerized setup for SIGECA Central database with all services.
+
+## Initial configuration
 
 Before first starting the server make sure to apply all configurations in this section.
 
 #### Domain name
 The domain name should be updated in 2 palces
-- ``config/nginx/nifi.conf``, ``server_name`` parameter
+- ``config/nginx/nifi.conf``, ``server_name`` parameter (in both port 80 and port 443 sections)
 - ``.env`` file
 
 #### Database Configuration
@@ -34,7 +36,7 @@ These files should be copied to ``config/nginx/ssl/`` dir
 
 Additionally the ``ssl-params.conf`` file contains SSL parameters for nginx server
 
-### Apache NiFi configuration
+## Apache NiFi configuration
 
 #### Changing NiFi settings
 - Run NiFi container ```docker compose up -d nifi```
@@ -44,15 +46,13 @@ Additionally the ``ssl-params.conf`` file contains SSL parameters for nginx serv
     - Copy the file back into container ```docker compose cp ./nifi.properties nifi:/opt/nifi/nifi-current/conf/nifi.properties```
     - Restart the container ```docker compose restart nifi```
 
+Do not change the settings set by the ```.env``` variables, as these settings will get updated every time the container restarts.
+
 #### Changing username and password to NiFi web UI
 - Run NiFi container ```docker compose up -d nifi```
 - Open shell in container ```docker compose exec nifi /bin/bash```
 - Set username and password ```/opt/nifi/nifi-current/bin/nifi.sh set-single-user-credentials <username> <password>```
 - Restart the container ```docker compose restart nifi```
-
-#### Deploying Postgres driver
-To access the database Apache NiFi requires the JDBC PostgreSQL driver. Copy the driver with:
-- ```docker compose cp lib/postgresql-*.jar nifi:/opt/nifi/nifi-current/lib/```
 
 #### Deploy NiFi Workflow
 To upload current version of SIGECA Central Nifi flow:
@@ -62,9 +62,19 @@ To upload current version of SIGECA Central Nifi flow:
 - Select the workflow file (```./config/nifi/SIGECA_Central.json```)
 - Click ```Add```
 
-The ```SIGECA_Central``` process group should appear in the workspace
+The ```SIGECA_Central``` process group should appear in the workspace.
 
-### Create Test Dataset 
+## Accessing NiFi synchrozization API
+
+#### Generating Basic auth credentials
+To generate the file required for accessing the NiFi API you will need a tool called ```htpasswd```
+and generate the file ```config/nginx/.htpasswd```. The instructions on how to do that: [link](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/). This file will be used as
+auth source for API access by the NGINX.
+
+#### Updating IP filter for NiFi API
+In Addition to the BASIC auth NiFi API requires client IPs to be included in ```config/nginx/nifi.conf``` in the ```/api/``` location. The clients IP should be below the ```localhost``` group and above ```deny all``` clause.
+
+## Create Test Dataset
 Prerequisites: 
 - Python3 and venv installed. 
 - .env file created configured.
@@ -75,7 +85,7 @@ Steps:
 - Create new venv ```python3 -m venv venv```
 - Execute script creating demo data ```python add_demo_data.py```
 
-### Mapa Sanitario Configuration
+## Mapa Sanitario Configuration
 Mapa Sanitario is accessed through REST API and uses 3 actions to retrieve data
 - ``POST /api/login_check`` - Login request responding with JWT
 - ``GET /api/unidade`` - Retrieve full list of facilities (requires Bearer token)
@@ -86,4 +96,3 @@ For a proper connection, the following fields are required to be filled in ``.en
 - ``MAPA_SANITARIO_URL`` - FQDN of the Mapa Sanitario API
 - ``MAPA_SANITARIO_USERNAME`` - Username for the Mapa Sanitario API
 - ``MAPA_SANITARIO_PASSWORD`` - Password for the Mapa Sanitario API
-

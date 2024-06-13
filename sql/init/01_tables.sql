@@ -328,17 +328,17 @@ CREATE TABLE ms.facility (
     reference_id UUID,
     is_deleted BOOLEAN,
     last_updated TIMESTAMPTZ,
-    name VARCHAR(255),
-    code VARCHAR(50),
-    acronym VARCHAR(10),
-    category VARCHAR(50),
-    ownership VARCHAR(100),
-    management VARCHAR(50),
-    municipality VARCHAR(50),
-    province VARCHAR(50),
+    name TEXT,
+    code TEXT,
+    acronym TEXT,
+    category TEXT,
+    ownership TEXT,
+    management TEXT,
+    municipality TEXT,
+    province TEXT,
     is_operational BOOLEAN,
-    latitude NUMERIC(19, 5),
-    longitude NUMERIC(19, 5)
+    latitude TEXT,
+    longitude TEXT
 );
 
 CREATE TABLE ms.service (

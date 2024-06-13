@@ -15,11 +15,11 @@ BEGIN
         -- Update or insert the facility
         IF (SELECT count(*) FROM ms.facility WHERE code = fac->>'codigo') > 0 THEN
             UPDATE ms.facility
-            SET reference_id = null, is_deleted = false, last_updated = update_time, name = fac->>'nome', acronym = fac->>'sigla', category = fac->>'categoria', ownership = fac->>'propriedade', management = fac->>'gestao', municipality = fac->>'municipio', province = fac->>'provincia', is_operational = (fac->>'funcionamento')::BOOLEAN, latitude = (fac->>'latitude')::NUMERIC, longitude = (fac->>'longitude')::NUMERIC
+            SET reference_id = null, is_deleted = false, last_updated = update_time, name = fac->>'nome', acronym = fac->>'sigla', category = fac->>'categoria', ownership = fac->>'propriedade', management = fac->>'gestao', municipality = fac->>'municipio', province = fac->>'provincia', is_operational = (fac->>'funcionamento')::BOOLEAN, latitude = fac->>'latitude', longitude = fac->>'longitude'
             WHERE code = fac->>'codigo';
         ELSE
             INSERT INTO ms.facility(reference_id, is_deleted, last_updated, name, code, acronym, category, ownership, management, municipality, province, is_operational, latitude, longitude)
-            VALUES (null, false, update_time, fac->>'nome', fac->>'codigo', fac->>'sigla', fac->>'categoria', fac->>'propriedade', fac->>'gestao', fac->>'municipio', fac->>'provincia', (fac->>'funcionamento')::BOOLEAN, (fac->>'latitude')::NUMERIC, (fac->>'longitude')::NUMERIC);
+            VALUES (null, false, update_time, fac->>'nome', fac->>'codigo', fac->>'sigla', fac->>'categoria', fac->>'propriedade', fac->>'gestao', fac->>'municipio', fac->>'provincia', (fac->>'funcionamento')::BOOLEAN, fac->>'latitude', fac->>'longitude');
         END IF;
 
         -- Update or insert services associated with the facility      
