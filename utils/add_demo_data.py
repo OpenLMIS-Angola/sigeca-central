@@ -287,12 +287,12 @@ def pupulate_facility_programs(max_per_facility, facilities, programs):
         shuffle(programs_facility)
         for _ in range(randint(1, max_per_facility)):
             data.append((
-                random_uuid(),
+                *base_properties(),
                 facility, 
                 programs_facility.pop()
             ))
     execute_values(cur, """
-    INSERT INTO supported_program (id, facility_id, program_id)
+    INSERT INTO supported_program (id, reference_id, is_deleted, last_updated, facility_id, program_id)
     VALUES %s
     """, data)
     return [x[0] for x in data]

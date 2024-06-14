@@ -299,6 +299,9 @@ CREATE TABLE stock_on_hand (
 -- Supported programs
 CREATE TABLE supported_program (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    reference_id UUID,
+    is_deleted BOOLEAN,
+    last_updated TIMESTAMPTZ,
     facility_id UUID,
     program_id UUID
 );
