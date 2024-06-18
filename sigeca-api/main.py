@@ -13,7 +13,7 @@ from models import TokenResponse, SyncInput, MSFacility, User
 app = FastAPI(root_path=os.getenv("ROOT_PATH"))
 
 
-@app.post("/token")
+@app.post("/token/")
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], ) -> TokenResponse:
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
