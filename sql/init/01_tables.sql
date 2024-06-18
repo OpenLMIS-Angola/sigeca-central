@@ -2,8 +2,8 @@
 CREATE TABLE facility (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     active BOOLEAN,
     code TEXT,
     comment TEXT,
@@ -17,8 +17,8 @@ CREATE TABLE facility (
 CREATE TABLE geographic_level (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     code TEXT,
     level INTEGER,
     name TEXT
@@ -28,8 +28,8 @@ CREATE TABLE geographic_level (
 CREATE TABLE geographic_zone (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     catchment_population INTEGER,
     longitude NUMERIC(8, 5),
     latitude NUMERIC(8, 5),
@@ -42,8 +42,8 @@ CREATE TABLE geographic_zone (
 CREATE TABLE lot (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     active BOOLEAN,
     code TEXT,
     expiration_date DATE,
@@ -54,8 +54,8 @@ CREATE TABLE lot (
 CREATE TABLE "order" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     created_by_id UUID,
     created_date DATE,
     emergency BOOLEAN,
@@ -75,8 +75,8 @@ CREATE TABLE "order" (
 CREATE TABLE order_line (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     order_id UUID,
     product_id UUID,
     ordered_quantity BIGINT,
@@ -87,8 +87,8 @@ CREATE TABLE order_line (
 CREATE TABLE product (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     code TEXT,
     name TEXT,
     description TEXT,
@@ -101,8 +101,8 @@ CREATE TABLE product (
 CREATE TABLE program (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     active BOOLEAN,
     code TEXT,
     name TEXT,
@@ -117,8 +117,8 @@ CREATE TABLE program (
 CREATE TABLE program_product (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     active BOOLEAN,
     doses_per_patient INTEGER,
     program_id UUID,
@@ -130,8 +130,8 @@ CREATE TABLE program_product (
 CREATE TABLE proof_of_delivery (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     status TEXT,
     delivered_by TEXT,
     received_by TEXT,
@@ -142,8 +142,8 @@ CREATE TABLE proof_of_delivery (
 CREATE TABLE proof_of_delivery_line (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     proof_of_delivery_id UUID,
     notes TEXT,
     quantity_accepted INTEGER,
@@ -160,8 +160,8 @@ CREATE TABLE proof_of_delivery_line (
 CREATE TABLE requisition (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     created_date DATE,
     modified_date DATE,
     emergency BOOLEAN,
@@ -177,8 +177,8 @@ CREATE TABLE requisition (
 CREATE TABLE requisition_line (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     adjusted_consumption INTEGER,
     approved_quantity INTEGER,
     average_consumption INTEGER,
@@ -219,8 +219,8 @@ CREATE TABLE requisition_line (
 CREATE TABLE stock_card (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     facility_id UUID,
     lot_id UUID,
     product_id UUID,
@@ -234,8 +234,8 @@ CREATE TABLE stock_card (
 CREATE TABLE stock_card_line (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,,
     destination_freetext TEXT,
     destination_number TEXT,
     occured_date DATE,
@@ -253,8 +253,8 @@ CREATE TABLE stock_card_line (
 CREATE TABLE stock_event (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     document_number TEXT,
     facility_id UUID,
     processed_date DATE,
@@ -269,8 +269,8 @@ CREATE TABLE stock_event (
 CREATE TABLE stock_event_line (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     destination_freetext TEXT,
     destination_id UUID,
     lot_id UUID,
@@ -288,8 +288,8 @@ CREATE TABLE stock_event_line (
 CREATE TABLE stock_on_hand (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     stock_on_hand INTEGER,
     occured_date DATE,
     stock_card_id UUID,
@@ -300,8 +300,8 @@ CREATE TABLE stock_on_hand (
 CREATE TABLE supported_program (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     facility_id UUID,
     program_id UUID
 );
@@ -310,8 +310,8 @@ CREATE TABLE supported_program (
 CREATE TABLE "user" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     active BOOLEAN,
     first_name TEXT,
     last_name TEXT,
@@ -325,12 +325,12 @@ CREATE TABLE "user" (
 
 -- Mapa Sanitario
 
--- Facility Table
+-- Facility table
 CREATE TABLE ms.facility (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     name TEXT,
     code TEXT,
     acronym TEXT,
@@ -344,20 +344,33 @@ CREATE TABLE ms.facility (
     longitude TEXT
 );
 
+-- Service table
 CREATE TABLE ms.service (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     code TEXT,
     name TEXT
 );
 
+-- FacilityService table
 CREATE TABLE ms.facility_service (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
-    is_deleted BOOLEAN,
-    last_updated TIMESTAMPTZ,
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     facility_id UUID,
     service_id UUID
+);
+
+-- SIGECA Central
+
+-- User table
+CREATE TABLE sigeca."user" (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    is_deleted BOOLEAN DEFAULT true,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
+    username TEXT,
+    password_hash TEXT
 );
