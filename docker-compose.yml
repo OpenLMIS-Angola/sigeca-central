@@ -40,6 +40,17 @@ services:
       - ./config/nifi/lib/postgresql-42.7.3.jar:/opt/nifi/nifi-current/lib/postgresql-42.7.3.jar
       - ./config/nifi/python-scripts/:/opt/nifi/nifi-current/python-scripts/
       - ./share:/share
+  api:
+    container_name: ${PROJECT_NAME:-sigeca_scentral}_api
+    image: sigeca-api
+    build: ./sigeca-api
+    environment:
+      - API_AUTH_SECRET_KEY=${API_AUTH_SECRET_KEY}
+      - DB_HOST=db
+      - DB_PORT=5432 # Port inside db container
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
   nginx:
     container_name: ${PROJECT_NAME:-sigeca_scentral}_nginx
     image: nginx:latest
@@ -49,9 +60,8 @@ services:
       - ${DB_PORT:-5432}:5432
     volumes:
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./config/nginx/nifi.conf:/etc/nginx/conf.d/nifi.conf
+      - ./config/nginx/http.conf:/etc/nginx/conf.d/http.conf
       - ./config/nginx/postgres.conf:/etc/nginx/postgres.conf
-      - ./config/nginx/.htpasswd:/etc/nginx/.htpasswd
       - ./config/nginx/ssl:/etc/nginx/ssl
       - ./share:/share
 
