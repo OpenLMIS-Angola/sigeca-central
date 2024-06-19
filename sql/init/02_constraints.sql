@@ -88,3 +88,7 @@ ADD CONSTRAINT facility_service_facility_id_fkey FOREIGN KEY (facility_id) REFER
 
 ALTER TABLE ms.facility_service
 ADD CONSTRAINT facility_service_service_id_fkey FOREIGN KEY (service_id) REFERENCES ms.service(id);
+
+-- SIGECA Central
+
+-- User constrants

@@ -235,7 +235,7 @@ CREATE TABLE stock_card_line (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID,
     is_deleted BOOLEAN DEFAULT true,
-    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,,
+    last_updated TIMESTAMPTZ default CURRENT_TIMESTAMP,
     destination_freetext TEXT,
     destination_number TEXT,
     occured_date DATE,
