@@ -45,6 +45,7 @@ services:
     image: sigeca-api
     build: ./sigeca-api
     environment:
+      - API_ROOT_PATH=${API_ROOT_PATH}
       - API_AUTH_SECRET_KEY=${API_AUTH_SECRET_KEY}
       - DB_HOST=db
       - DB_PORT=5432 # Port inside db container
