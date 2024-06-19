@@ -10,7 +10,7 @@ from db import fetch_all_facilities, execute_sync_input
 from auth import authenticate_user, create_token, get_user
 from models import TokenResponse, SyncInput, MSFacility, User
 
-app = FastAPI(root_path=os.getenv("ROOT_PATH"))
+app = FastAPI(root_path=os.getenv("API_ROOT_PATH"))
 
 
 @app.post("/token/")
