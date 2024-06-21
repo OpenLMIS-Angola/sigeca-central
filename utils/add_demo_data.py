@@ -21,8 +21,8 @@ conn = psycopg2.connect(
     dbname=config['DB_NAME'],
     user=config['DB_USER'],
     password=config['DB_PASSWORD'],
-    host=config['DOMAIN_NAME'],
-    port=config['DB_PORT']
+    host='localhost',
+    port=5999
 )
 cur = conn.cursor()
 
@@ -66,7 +66,7 @@ def populate_facility(n, geographic_zones):
     INSERT INTO facility (id, reference_id, is_deleted, last_updated, active, code, comment, geographic_zone_id, description, enabled, name)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into geographic_level table
 def populate_geographic_level(n):
@@ -82,7 +82,7 @@ def populate_geographic_level(n):
     INSERT INTO geographic_level (id, reference_id, is_deleted, last_updated, code, level, name)
     VALUES %s
     """, data)
-    return [{'id': x[0], 'level': x[5]} for x in data]
+    return [{'id': x[1], 'level': x[5]} for x in data]
 
 # Insert data into geographic_zone table
 def populate_geographic_zone(n, geographic_levels):
@@ -126,12 +126,12 @@ def populate_geographic_zone(n, geographic_levels):
             grouped_zones[level-1][randint(0, len(grouped_zones[level-1])-1)] if add_parent else None  # parent_id
         )
         data.append(new_row)
-        grouped_zones[level].append(new_row[0])
+        grouped_zones[level].append(new_row[1])
     execute_values(cur, """
     INSERT INTO geographic_zone (id, reference_id, is_deleted, last_updated, catchment_population, longitude, latitude, name, level_id, parent_id)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into lot table
 def populate_lot(n):
@@ -148,7 +148,7 @@ def populate_lot(n):
     INSERT INTO lot (id, reference_id, is_deleted, last_updated, active, code, expiration_date, manufacture_date)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 
 # Insert data into user table
@@ -171,7 +171,7 @@ def populate_user(n, facilities):
     INSERT INTO "user" (id, reference_id, is_deleted, last_updated, active, first_name, last_name, timezone, username, verified, home_facility_id, job_title, phone_number)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into program table
 def populate_program(n):
@@ -192,7 +192,7 @@ def populate_program(n):
     INSERT INTO program (id, reference_id, is_deleted, last_updated, active, code, name, description, period_sskippable, shown_on_full_supply_tab, enable_date_physical_stock_count_completed, skipauthorization)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
     
 # Insert data into order table
 def populate_order(n, facilities, users, programs):
@@ -218,7 +218,7 @@ def populate_order(n, facilities, users, programs):
     INSERT INTO "order" (id, reference_id, is_deleted, last_updated, created_by_id, created_date, emergency, facility_id, order_code, program_id, quoted_cost, receiving_facility_id, requesting_facility_id, status, supplying_facility_id, last_updated_date, last_updater_id)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into product table
 def populate_product(n):
@@ -237,7 +237,7 @@ def populate_product(n):
     INSERT INTO product (id, reference_id, is_deleted, last_updated, code, name, description, pack_rounding_threshold, net_content, roundtozero)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into order_line table
 def populate_order_line(n, orders, products):
@@ -254,7 +254,7 @@ def populate_order_line(n, orders, products):
     INSERT INTO order_line (id, reference_id, is_deleted, last_updated, order_id, product_id, ordered_quantity, product_version_number)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into program_product table
 def populate_program_product(n, programs, products):
@@ -276,7 +276,7 @@ def populate_program_product(n, programs, products):
     INSERT INTO program_product (id, reference_id, is_deleted, last_updated, active, doses_per_patient, program_id, product_id, price_per_pack)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into program_product table
 def pupulate_facility_programs(max_per_facility, facilities, programs):
@@ -295,7 +295,7 @@ def pupulate_facility_programs(max_per_facility, facilities, programs):
     INSERT INTO supported_program (id, reference_id, is_deleted, last_updated, facility_id, program_id)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into proof_of_delivery table
 def populate_proof_of_delivery(n):
@@ -313,7 +313,7 @@ def populate_proof_of_delivery(n):
     INSERT INTO proof_of_delivery (id, reference_id, is_deleted, last_updated, status, delivered_by, received_by, received_date)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into proof_of_delivery_line table
 def populate_proof_of_delivery_line(n, proofs_of_deliveries, products, lots):
@@ -336,7 +336,7 @@ def populate_proof_of_delivery_line(n, proofs_of_deliveries, products, lots):
     INSERT INTO proof_of_delivery_line (id,reference_id, is_deleted, last_updated, proof_of_delivery_id, notes, quantity_accepted, quantity_rejected, product_id, lot_id, vvm_status, use_vvw, rejection_reasen_id, product_version_number)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into requisition table
 def populate_requisition(n, facilities, programs):
@@ -358,7 +358,7 @@ def populate_requisition(n, facilities, programs):
     INSERT INTO requisition (id, reference_id, is_deleted, last_updated, created_date, modified_date, emergency, facility_id, months_in_period, program_id, supplying_facility_id, stock_count_date, report_only)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into requisition_line table
 def populate_requisition_line(n, products, requisitions):
@@ -404,7 +404,7 @@ def populate_requisition_line(n, products, requisitions):
     INSERT INTO requisition_line (id, reference_id, is_deleted, last_updated, adjusted_consumption, approved_quantity, average_consumption, begining_balance, calculated_order_quantity, max_periods_of_stock, max_stock_quantity, non_full_supply, new_patients_added, product_id, packs_to_ship, price_per_pack, requested_quantity, requested_quantity_explanation, skipped, stock_on_hand, total, total_consumed_quantity, total_cost, total_losses_and_adjustments, total_received_quantity, total_stockout_days, requisition_id, ideal_stock_amount, calculated_ordered_quantity_isa, additional_quantity_required, product_version_number, facility_type_approved_product_id, facility_type_approved_product_version_number, patients_on_treatment_next_month, total_requirement, total_quantity_needed_by_hf, quantity_to_issue)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into stock_event table
 def populate_stock_event(n, facilities, programs, users):
@@ -425,7 +425,7 @@ def populate_stock_event(n, facilities, programs, users):
     INSERT INTO stock_event (id, reference_id, is_deleted, last_updated, document_number, facility_id, processed_date, program_id, signature, user_id, is_showed, is_active)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into stock_event_line table
 def populate_stock_event_line(n, facilities, lots, products, stocks_events):
@@ -449,7 +449,7 @@ def populate_stock_event_line(n, facilities, lots, products, stocks_events):
     INSERT INTO stock_event_line (id, reference_id, is_deleted, last_updated, destination_freetext, destination_id, lot_id, occured_date, product_id, quantity, reason_freetext, reason_id, source_freetext, source_id, stock_event_id)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into stock_card table
 def populate_stock_card(n, facilities, lots, products, programs, events):
@@ -469,7 +469,7 @@ def populate_stock_card(n, facilities, lots, products, programs, events):
     INSERT INTO stock_card (id, reference_id, is_deleted, last_updated, facility_id, lot_id, product_id, program_id, origin_event_id, is_showed, is_active)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into stock_card_line table
 def populate_stock_card_line(n, users, stock_events, stocks_cards):
@@ -497,7 +497,7 @@ def populate_stock_card_line(n, users, stock_events, stocks_cards):
     INSERT INTO stock_card_line (id, reference_id, is_deleted, last_updated, destination_freetext, destination_number, occured_date, processed_date, quantity, reason_freetext, signature, source_freetext, user_id, origin_event_id, stock_card_id)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 # Insert data into stock_on_hand table
 def populate_stock_on_hand(n, stock_cards):
@@ -514,7 +514,7 @@ def populate_stock_on_hand(n, stock_cards):
     INSERT INTO stock_on_hand (id,reference_id, is_deleted, last_updated, stock_on_hand, occured_date, stock_card_id, processed_date)
     VALUES %s
     """, data)
-    return [x[0] for x in data]
+    return [x[1] for x in data]
 
 
 
