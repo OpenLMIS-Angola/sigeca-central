@@ -2,7 +2,7 @@
 CREATE TABLE "facility" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     active BOOLEAN,
     code TEXT,
@@ -19,7 +19,7 @@ CREATE INDEX idx_facility_reference_id ON "facility" (reference_id);
 CREATE TABLE "geographic_level" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     code TEXT,
     level INTEGER,
@@ -32,7 +32,7 @@ CREATE INDEX idx_geographic_level_reference_id ON "geographic_level" (reference_
 CREATE TABLE "geographic_zone" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     catchment_population INTEGER,
     longitude NUMERIC(8, 5),
@@ -48,7 +48,7 @@ CREATE INDEX idx_geographic_zone_reference_id ON "geographic_zone" (reference_id
 CREATE TABLE "lot" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE ,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     active BOOLEAN,
     code TEXT,
@@ -62,7 +62,7 @@ CREATE INDEX idx_lot_reference_id ON "lot" (reference_id);
 CREATE TABLE "order" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     created_by_id UUID,
     created_date DATE,
@@ -85,7 +85,7 @@ CREATE INDEX idx_order_reference_id ON "order" (reference_id);
 CREATE TABLE "order_line" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     order_id UUID,
     product_id UUID,
@@ -99,7 +99,7 @@ CREATE INDEX idx_order_line_reference_id ON "order_line" (reference_id);
 CREATE TABLE "product" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     code TEXT,
     name TEXT,
@@ -115,7 +115,7 @@ CREATE INDEX idx_product_reference_id ON "product" (reference_id);
 CREATE TABLE "program" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     active BOOLEAN,
     code TEXT,
@@ -133,7 +133,7 @@ CREATE INDEX idx_program_reference_id ON "program" (reference_id);
 CREATE TABLE "program_product" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     active BOOLEAN,
     doses_per_patient INTEGER,
@@ -148,7 +148,7 @@ CREATE INDEX idx_program_product_reference_id ON "program_product" (reference_id
 CREATE TABLE "proof_of_delivery" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     status TEXT,
     delivered_by TEXT,
@@ -162,7 +162,7 @@ CREATE INDEX idx_proof_of_delivery_reference_id ON "proof_of_delivery" (referenc
 CREATE TABLE "proof_of_delivery_line" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     proof_of_delivery_id UUID,
     notes TEXT,
@@ -182,7 +182,7 @@ CREATE INDEX idx_proof_of_delivery_line_reference_id ON "proof_of_delivery_line"
 CREATE TABLE "requisition" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     created_date DATE,
     modified_date DATE,
@@ -201,7 +201,7 @@ CREATE INDEX idx_requisition_reference_id ON "requisition" (reference_id);
 CREATE TABLE "requisition_line" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     adjusted_consumption INTEGER,
     approved_quantity INTEGER,
@@ -245,7 +245,7 @@ CREATE INDEX idx_requisition_line_reference_id ON "requisition_line" (reference_
 CREATE TABLE "stock_card" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     facility_id UUID,
     lot_id UUID,
@@ -262,7 +262,7 @@ CREATE INDEX idx_stock_card_reference_id ON "stock_card" (reference_id);
 CREATE TABLE "stock_card_line" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     destination_freetext TEXT,
     destination_number TEXT,
@@ -283,7 +283,7 @@ CREATE INDEX idx_stock_card_line_reference_id ON "stock_card_line" (reference_id
 CREATE TABLE "stock_event" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     document_number TEXT,
     facility_id UUID,
@@ -301,7 +301,7 @@ CREATE INDEX idx_stock_event_reference_id ON "stock_event" (reference_id);
 CREATE TABLE "stock_event_line" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     destination_freetext TEXT,
     destination_id UUID,
@@ -322,7 +322,7 @@ CREATE INDEX idx_stock_event_line_reference_id ON "stock_event_line" (reference_
 CREATE TABLE "stock_on_hand" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     stock_on_hand INTEGER,
     occured_date DATE,
@@ -336,7 +336,7 @@ CREATE INDEX idx_stock_on_hand_reference_id ON "stock_on_hand" (reference_id);
 CREATE TABLE "supported_program" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     facility_id UUID,
     program_id UUID
@@ -348,7 +348,7 @@ CREATE INDEX idx_supported_program_reference_id ON "supported_program" (referenc
 CREATE TABLE "user" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     active BOOLEAN,
     first_name TEXT,
@@ -369,7 +369,7 @@ CREATE INDEX idx_user_reference_id ON "user" (reference_id);
 CREATE TABLE ms.facility (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     name TEXT,
     code TEXT,
@@ -388,7 +388,7 @@ CREATE TABLE ms.facility (
 CREATE TABLE ms.service (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     code TEXT,
     name TEXT
@@ -398,7 +398,7 @@ CREATE TABLE ms.service (
 CREATE TABLE ms.facility_service (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     reference_id UUID UNIQUE,
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     facility_id UUID,
     service_id UUID
@@ -409,8 +409,8 @@ CREATE TABLE ms.facility_service (
 -- User table
 CREATE TABLE sigeca."user" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    is_deleted BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    username TEXT,
+    username TEXT UNIQUE,
     password_hash TEXT
 );
