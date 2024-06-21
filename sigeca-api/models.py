@@ -50,6 +50,6 @@ class SyncInput(BaseModel):
     id: UUID
     schema_name: Optional[str]
     table_name: str
-    operation: Literal["I", "U", "D"]
+    operation: Literal["I", "U", "D", "S"]
     change_time: datetime
     row_data: dict

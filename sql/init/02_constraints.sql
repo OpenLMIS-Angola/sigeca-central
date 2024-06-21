@@ -9,8 +9,8 @@ ADD CONSTRAINT facility_geographic_zone_id_fkey FOREIGN KEY (geographic_zone_id)
 ALTER TABLE geographic_zone
 ADD CONSTRAINT geographic_zone_level_id_fkey FOREIGN KEY (level_id) REFERENCES geographic_level(reference_id);
 
-ALTER TABLE geographic_zone
-ADD CONSTRAINT geographic_zone_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES geographic_zone(reference_id);
+-- ALTER TABLE geographic_zone
+-- ADD CONSTRAINT geographic_zone_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES geographic_zone(reference_id);
 
 -- Lot constraints
 
@@ -22,6 +22,9 @@ ADD CONSTRAINT order_line_order_id_fkey FOREIGN KEY (order_id) REFERENCES "order
 
 -- Product constraints
 
+ALTER TABLE product
+ADD CONSTRAINT product_reference_id_version_number_unique UNIQUE (reference_id, version_number);
+
 -- Program constraints
 
 -- Program Product constraints
@@ -29,7 +32,7 @@ ALTER TABLE program_product
 ADD CONSTRAINT program_product_program_id_fkey FOREIGN KEY (program_id) REFERENCES program(reference_id);
 
 ALTER TABLE program_product
-ADD CONSTRAINT program_product_product_id_fkey FOREIGN KEY (product_id) REFERENCES product(reference_id);
+ADD CONSTRAINT program_product_product_id_fkey FOREIGN KEY (product_id, product_version_number) REFERENCES product(reference_id, version_number);
 
 -- Proof Of Delivery constraints
 
@@ -74,7 +77,13 @@ ADD CONSTRAINT supported_program_facility_id_fkey FOREIGN KEY (facility_id) REFE
 ALTER TABLE supported_program
 ADD CONSTRAINT supported_program_program_id_fkey FOREIGN KEY (program_id) REFERENCES program(reference_id);
 
+ALTER TABLE supported_program
+ADD CONSTRAINT supported_program_facility_id_program_id_unique UNIQUE (facility_id, program_id);
+
 -- User constraints
+
+ALTER TABLE "user"
+ADD CONSTRAINT user_home_facility_id_fkey FOREIGN KEY (home_facility_id) REFERENCES facility(reference_id);
 
 -- Mapa Sanitario
 
