@@ -37,6 +37,7 @@ CREATE TABLE "geographic_zone" (
     catchment_population INTEGER,
     longitude NUMERIC(8, 5),
     latitude NUMERIC(8, 5),
+    code TEXT,
     name TEXT,
     level_id UUID,
     parent_id UUID
@@ -98,15 +99,16 @@ CREATE INDEX idx_order_line_reference_id ON "order_line" (reference_id);
 -- Product table
 CREATE TABLE "product" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    reference_id UUID UNIQUE,
+    reference_id UUID,
     is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    version_number BIGINT,
     code TEXT,
     name TEXT,
     description TEXT,
     pack_rounding_threshold BIGINT,
     net_content BIGINT,
-    roundtozero BOOLEAN
+    round_to_zero BOOLEAN
 );
 
 CREATE INDEX idx_product_reference_id ON "product" (reference_id);
@@ -139,6 +141,7 @@ CREATE TABLE "program_product" (
     doses_per_patient INTEGER,
     program_id UUID,
     product_id UUID,
+    product_version_number BIGINT,
     price_per_pack DECIMAL(19, 2)
 );
 
@@ -171,8 +174,8 @@ CREATE TABLE "proof_of_delivery_line" (
     product_id UUID,
     lot_id UUID,
     vvm_status TEXT,
-    use_vvw BOOLEAN,
-    rejection_reasen_id UUID,
+    use_vvm BOOLEAN,
+    rejection_reason_id UUID,
     product_version_number BIGINT
 );
 
@@ -190,6 +193,7 @@ CREATE TABLE "requisition" (
     facility_id UUID,
     months_in_period INTEGER,
     program_id UUID,
+    status TEXT,
     supplying_facility_id UUID,
     stock_count_date DATE,
     report_only BOOLEAN
@@ -206,7 +210,7 @@ CREATE TABLE "requisition_line" (
     adjusted_consumption INTEGER,
     approved_quantity INTEGER,
     average_consumption INTEGER,
-    begining_balance INTEGER,
+    beginning_balance INTEGER,
     calculated_order_quantity INTEGER,
     max_periods_of_stock DECIMAL(19, 2),
     max_stock_quantity INTEGER,
@@ -227,7 +231,7 @@ CREATE TABLE "requisition_line" (
     total_stockout_days INTEGER,
     requisition_id UUID,
     ideal_stock_amount INTEGER,
-    calculated_ordered_quantity_isa INTEGER,
+    calculated_order_quantity_isa INTEGER,
     additional_quantity_required INTEGER,
     product_version_number BIGINT,
     facility_type_approved_product_id UUID,
@@ -265,8 +269,9 @@ CREATE TABLE "stock_card_line" (
     is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     destination_freetext TEXT,
+    document_number TEXT,
     destination_number TEXT,
-    occured_date DATE,
+    occurred_date DATE,
     processed_date DATE,
     quantity INTEGER,
     reason_freetext TEXT,
@@ -306,7 +311,7 @@ CREATE TABLE "stock_event_line" (
     destination_freetext TEXT,
     destination_id UUID,
     lot_id UUID,
-    occured_date DATE,
+    occurred_date DATE,
     product_id UUID,
     quantity INTEGER,
     reason_freetext TEXT,
@@ -325,7 +330,7 @@ CREATE TABLE "stock_on_hand" (
     is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     stock_on_hand INTEGER,
-    occured_date DATE,
+    occurred_date DATE,
     stock_card_id UUID,
     processed_date DATE
 );
@@ -338,8 +343,11 @@ CREATE TABLE "supported_program" (
     reference_id UUID UNIQUE,
     is_deleted BOOLEAN DEFAULT FALSE,
     last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    active BOOLEAN,
+    start_date DATE,
     facility_id UUID,
-    program_id UUID
+    program_id UUID,
+    locally_fulfilled BOOLEAN
 );
 
 CREATE INDEX idx_supported_program_reference_id ON "supported_program" (reference_id);
