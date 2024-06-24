@@ -10,10 +10,10 @@ from sql_builder import generate_statement_with_args
 db_conn = dsn = f"host={os.getenv("DB_HOST")} port={os.getenv("DB_PORT")} dbname={os.getenv("DB_NAME")} user={os.getenv("DB_USER")} password={os.getenv("DB_PASSWORD")}"
 
 _q_fetch_all_facilities = sql.SQL("""
-select f.*, jsonb_agg(json_build_object('code', s.code, 'name', s.name)) as services
+select f.*, coalesce(jsonb_agg(json_build_object('code', s.code, 'name', s.name)) filter (where s.id is not null), '[]') as services
 from ms.facility f
-join ms.facility_service fs on f.id=fs.facility_id
-join ms.service s on fs.service_id=s.id
+left join ms.facility_service fs on f.id=fs.facility_id
+left join ms.service s on fs.service_id=s.id
 group by f.id;
 """)
 
