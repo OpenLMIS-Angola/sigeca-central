@@ -20,6 +20,10 @@ ADD CONSTRAINT geographic_zone_level_id_fkey FOREIGN KEY (level_id) REFERENCES g
 ALTER TABLE order_line
 ADD CONSTRAINT order_line_order_id_fkey FOREIGN KEY (order_id) REFERENCES "order"(reference_id);
 
+-- Price Changes constraints
+ALTER TABLE price_changes
+ADD CONSTRAINT program_product_program_product_id_fkey FOREIGN KEY (program_product_id) REFERENCES program_product(reference_id);
+
 -- Product constraints
 
 ALTER TABLE product

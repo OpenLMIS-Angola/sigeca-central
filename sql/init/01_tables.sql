@@ -96,6 +96,20 @@ CREATE TABLE "order_line" (
 
 CREATE INDEX idx_order_line_reference_id ON "order_line" (reference_id);
 
+-- Price Changes table
+CREATE TABLE "price_changes" (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    reference_id UUID UNIQUE,
+    is_deleted BOOLEAN DEFAULT FALSE,
+    last_updated TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    program_product_id UUID,
+    author_id UUID,
+    price DECIMAL(19, 2),
+    occurred_date TIMESTAMPTZ
+);
+
+CREATE INDEX idx_price_changes_reference_id ON price_changes (reference_id);
+
 -- Product table
 CREATE TABLE "product" (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
